@@ -112,4 +112,3 @@ class TestTopologyClassifier(BaseTopologyTest):
         )
         with pytest.raises(NotFittedError):
             classifier.predict(self.circle_data)
-

@@ -75,7 +75,9 @@ def hypersphere(intrinsic_dim, num_points, radius=1):
     """
     unit_hypersphere = Hypersphere(dim=intrinsic_dim)
     unit_hypersphere_points = unit_hypersphere.random_point(n_samples=num_points)
-    intrinsic_coords = unit_hypersphere.extrinsic_to_intrinsic_coords(unit_hypersphere_points)
+    intrinsic_coords = unit_hypersphere.extrinsic_to_intrinsic_coords(
+        unit_hypersphere_points
+    )
     return radius * unit_hypersphere_points, intrinsic_coords
 
 
@@ -110,9 +112,14 @@ def hypertorus(intrinsic_dim, num_points, radii=None, parameterization="flat"):
             hypertorus_points[:, _, :] = radii[_] * unit_hypertorus_points[:, _, :]
     intrinsic_coords = torch.zeros(num_points, intrinsic_dim)
     for i, factor in enumerate(unit_hypertorus.factors):
-        intrinsic_coords[:, i] = factor.extrinsic_to_intrinsic_coords(hypertorus_points[:, i, :]).squeeze()
+        intrinsic_coords[:, i] = factor.extrinsic_to_intrinsic_coords(
+            hypertorus_points[:, i, :]
+        ).squeeze()
 
-    return gs.reshape(hypertorus_points, (num_points, intrinsic_dim * 2)), intrinsic_coords
+    return (
+        gs.reshape(hypertorus_points, (num_points, intrinsic_dim * 2)),
+        intrinsic_coords,
+    )
 
 
 def cylinder(num_points, radius=1):
@@ -132,7 +139,9 @@ def cylinder(num_points, radius=1):
     cylinder = ProductManifold(factors=factors)
     cylinder_points = cylinder.random_point(n_samples=num_points, bound=1)
     intrinsic_coords = torch.zeros(num_points, 2)
-    intrinsic_coords[:, 0] = factors[0].extrinsic_to_intrinsic_coords(cylinder_points[:, :2]).squeeze()
+    intrinsic_coords[:, 0] = (
+        factors[0].extrinsic_to_intrinsic_coords(cylinder_points[:, :2]).squeeze()
+    )
     intrinsic_coords[:, 1] = cylinder_points[:, 2]
     cylinder_points[:, :2] = radius * cylinder_points[:, :2]
     return cylinder_points, intrinsic_coords

@@ -60,7 +60,7 @@ class TopologyClassifier(ClassifierMixin, BaseEstimator):
                 points=circle_task_points,
                 encoding_dim=encoding_dim,
                 nonlinearity="sigmoid",
-                scales=5*gs.random.rand(encoding_dim),
+                scales=5 * gs.random.rand(encoding_dim),
                 fano_factor=self.fano_factor,
             )
             circle_point_clouds.append(circle_noisy_points)
@@ -72,7 +72,7 @@ class TopologyClassifier(ClassifierMixin, BaseEstimator):
                 points=sphere_task_points,
                 encoding_dim=encoding_dim,
                 nonlinearity="sigmoid",
-                scales=5*gs.random.rand(encoding_dim),
+                scales=5 * gs.random.rand(encoding_dim),
                 fano_factor=self.fano_factor,
             )
             sphere_point_clouds.append(sphere_noisy_points)
@@ -84,7 +84,7 @@ class TopologyClassifier(ClassifierMixin, BaseEstimator):
                 points=torus_task_points,
                 encoding_dim=encoding_dim,
                 nonlinearity="sigmoid",
-                scales=5*gs.random.rand(encoding_dim),
+                scales=5 * gs.random.rand(encoding_dim),
                 fano_factor=self.fano_factor,
             )
             torus_point_clouds.append(torus_noisy_points)
@@ -143,7 +143,9 @@ class TopologyClassifier(ClassifierMixin, BaseEstimator):
         """
 
         if not isinstance(X, np.ndarray | torch.Tensor):
-            raise ValueError(f"Expected array-like input for X, but got {type(X).__name__}.")
+            raise ValueError(
+                f"Expected array-like input for X, but got {type(X).__name__}."
+            )
 
         ref_point_clouds, ref_labels = self._generate_ref_data(X)
         self.ref_labels = ref_labels
@@ -270,4 +272,3 @@ def compute_diagrams_shuffle(X, num_shuffles, seed=0, homology_dimensions=(0, 1)
     return compute_persistence_diagrams(
         [X, *shuffled_Xs], homology_dimensions=homology_dimensions
     )
-
